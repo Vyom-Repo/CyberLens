@@ -130,7 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const vt = sources.virustotal;
     const abuse = sources.abuseipdb;
 
-    // 1. Executive Verdict Banner
     document.getElementById("dossierIoc").textContent = analysis.ioc;
     document.getElementById("dossierType").textContent = analysis.ioc_type;
     document.getElementById("dossierScore").textContent = risk.score;
@@ -143,7 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("dossierConfidencePill").textContent = `${risk.confidence} CONFIDENCE`;
     document.getElementById("dossierSummary").textContent = analysis.summary;
 
-    // Apply color accents to score card
     const bannerCard = document.getElementById("verdictCard");
     const colors = {
       low: { text: "var(--severity-low-text)", bg: "var(--severity-low-bg)", border: "var(--severity-low-border)", stripe: "var(--severity-low-accent)" },
@@ -157,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
     bannerCard.style.setProperty("--verdict-border", c.border);
     bannerCard.style.setProperty("--verdict-stripe", c.stripe);
 
-    // 2. Chart.js Engine Doughnut
     if (vt && vt.engine_stats) {
       ChartRenderer.renderEngineDoughnut("engineChart", vt.engine_stats);
       document.getElementById("legMalicious").textContent = vt.engine_stats.malicious;
@@ -166,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("legUndetected").textContent = vt.engine_stats.undetected;
     }
 
-    // 3. Justifications Rationale
     const justList = document.getElementById("justificationList");
     justList.innerHTML = "";
     risk.justifications.forEach((just, idx) => {
@@ -179,7 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
       justList.appendChild(li);
     });
 
-    // 4. VirusTotal Telemetry Card
     if (vt && vt.status === "SUCCESS") {
       document.getElementById("vtCard").style.display = "flex";
       document.getElementById("vtRatio").textContent = `${(vt.detection_ratio * 100).toFixed(1)}%`;
@@ -192,7 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("vtCard").style.display = "none";
     }
 
-    // 5. AbuseIPDB Telemetry Card
     if (abuse && abuse.status === "SUCCESS") {
       document.getElementById("abuseCard").style.display = "flex";
       document.getElementById("abuseScore").textContent = `${abuse.abuse_confidence_score}%`;
@@ -203,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("abuseCard").style.display = "none";
     }
 
-    // 6. JSON Viewer
     document.getElementById("rawJsonViewer").textContent = JSON.stringify(report, null, 2);
 
     dossierContainer.style.display = "flex";

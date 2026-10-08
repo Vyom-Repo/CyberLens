@@ -47,7 +47,6 @@ async def analyze_endpoint(payload: AnalyzeRequest, db: Session = Depends(get_db
     5. Save analysis to SQLite database
     6. Return unified analysis report
     """
-    # 1. Validation & Hygiene
     validation = validate_ioc(payload.ioc, payload.ioc_type)
     if not validation.valid:
         raise HTTPException(
@@ -58,21 +57,18 @@ async def analyze_endpoint(payload: AnalyzeRequest, db: Session = Depends(get_db
     sanitized_ioc = validation.sanitized_ioc or payload.ioc
     ioc_type = validation.ioc_type or "Unknown"
 
-    # 2. Parallel Upstream Dispatching
     raw_intel = await dispatcher.dispatch(
         ioc=sanitized_ioc,
         ioc_type=ioc_type,
         supported_sources=validation.supported_sources,
     )
 
-    # 3. Normalization
     sources, completeness = normalize_intelligence(
         ioc=sanitized_ioc,
         ioc_type=ioc_type,
         raw_intel=raw_intel,
     )
 
-    # 4. Explainable Risk Scoring
     risk_assessment = risk_engine.compute_risk(
         ioc=sanitized_ioc,
         ioc_type=ioc_type,
@@ -80,7 +76,6 @@ async def analyze_endpoint(payload: AnalyzeRequest, db: Session = Depends(get_db
         completeness=completeness,
     )
 
-    # Build master unified report
     now_utc = datetime.now(timezone.utc).isoformat()
     unified_report = UnifiedIOCReport(
         ioc=sanitized_ioc,
@@ -96,7 +91,6 @@ async def analyze_endpoint(payload: AnalyzeRequest, db: Session = Depends(get_db
         f"{ioc_type} IOC assessed with {risk_assessment.confidence} confidence."
     )
 
-    # 5. Persistence
     record = AnalysisRecord(
         ioc=sanitized_ioc,
         ioc_type=ioc_type,
@@ -111,7 +105,6 @@ async def analyze_endpoint(payload: AnalyzeRequest, db: Session = Depends(get_db
     db.commit()
     db.refresh(record)
 
-    # 6. Response
     return AnalysisResponse(
         id=record.id,
         ioc=record.ioc,

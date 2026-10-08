@@ -97,15 +97,12 @@ def detect_ioc_type(ioc: str) -> Optional[str]:
     if not ioc:
         return None
 
-    # 1. URL check (starts with http:// or https://)
     if URL_PATTERN.match(ioc):
         return "URL"
 
-    # 2. IPv4 check
     if IPV4_PATTERN.match(ioc):
         return "IPv4"
 
-    # 3. Hash checks (exact length and hex charset)
     if SHA256_PATTERN.match(ioc):
         return "SHA-256"
     if SHA1_PATTERN.match(ioc):
@@ -113,11 +110,9 @@ def detect_ioc_type(ioc: str) -> Optional[str]:
     if MD5_PATTERN.match(ioc):
         return "MD5"
 
-    # 4. IPv6 check
     if ":" in ioc and IPV6_PATTERN.match(ioc):
         return "IPv6"
 
-    # 5. Domain check
     if DOMAIN_PATTERN.match(ioc):
         return "Domain"
 

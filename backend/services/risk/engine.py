@@ -101,7 +101,6 @@ class RiskEngine:
         vt = sources.virustotal
         abuse = sources.abuseipdb
 
-        # 1. VirusTotal Findings
         if vt and vt.status == "SUCCESS":
             stats = vt.engine_stats
             if stats.malicious > 0:
@@ -119,7 +118,6 @@ class RiskEngine:
                     f"Zero security vendors on VirusTotal identified this indicator as malicious (0/{stats.total})."
                 )
 
-            # Categorical metadata
             cats = vt.extra_attributes.get("categories", {})
             if cats:
                 cat_names = list(cats.values())[:2]
@@ -127,7 +125,6 @@ class RiskEngine:
         elif vt and vt.status == "NOT_FOUND":
             justifications.append("Indicator has no prior detection records or history on VirusTotal.")
 
-        # 2. AbuseIPDB Findings
         if abuse and abuse.status == "SUCCESS":
             if abuse.abuse_confidence_score > 0 or abuse.total_reports > 0:
                 justifications.append(
@@ -142,7 +139,6 @@ class RiskEngine:
         elif abuse and abuse.status == "NOT_FOUND":
             justifications.append("IP address has zero recorded abuse reports in AbuseIPDB.")
 
-        # 3. Overall Contextual Summary
         if final_score >= 75:
             justifications.append("Severe risk consensus: Immediate blocking and containment recommended.")
         elif final_score >= 50:
@@ -152,7 +148,6 @@ class RiskEngine:
         elif final_score == 0:
             justifications.append("Clean reputation: No threat indicators identified across active threat feeds.")
 
-        # 4. Partial Availability Warning
         if completeness == "PARTIAL":
             justifications.append("Note: Assessment derived from partial intelligence feeds due to provider availability.")
         elif completeness == "INSUFFICIENT_DATA":

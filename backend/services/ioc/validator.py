@@ -270,8 +270,6 @@ def validate_ioc(raw_ioc: str, explicit_type: Optional[str] = None) -> IOCValida
         )
 
     sanitized = sanitize_ioc(raw_ioc)
-
-    # Resolve IOC type (either detected or explicitly specified)
     target_type = explicit_type if explicit_type else detect_ioc_type(sanitized)
 
     if not target_type:
@@ -284,7 +282,6 @@ def validate_ioc(raw_ioc: str, explicit_type: Optional[str] = None) -> IOCValida
             ),
         )
 
-    # Route to specialized structural validator
     upper_type = target_type.upper()
     if upper_type == "IPV4":
         return _validate_ip_address(sanitized, expected_version=4)
