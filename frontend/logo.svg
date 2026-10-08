@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 54" width="240" height="54" fill="none">
+  <!-- Lens Monogram Symbol -->
+  <g transform="translate(6, 6)">
+    <circle cx="21" cy="21" r="20" stroke="#14171A" stroke-width="2"/>
+    <circle cx="21" cy="21" r="15" stroke="#9E7B3B" stroke-width="1.2" stroke-dasharray="2 2"/>
+    <circle cx="21" cy="21" r="9.5" fill="#14171A"/>
+    <circle cx="21" cy="21" r="5" fill="#F8F7F4" stroke="#9E7B3B" stroke-width="1.2"/>
+    <circle cx="21" cy="21" r="2" fill="#9E7B3B"/>
+    <!-- Precision Reticle Axes -->
+    <path d="M21 2 L21 6 M21 36 L21 40 M2 21 L6 21 M36 21 L40 21" stroke="#14171A" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M10 10 L13 13 M29 29 L32 32 M29 13 L32 10 M10 29 L13 32" stroke="#9E7B3B" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Bespoke Wordmark -->
+  <text x="64" y="27" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif" font-size="20" font-weight="700" letter-spacing="-0.03em" fill="#14171A">Cyber<tspan fill="#9E7B3B">Lens</tspan></text>
+  <text x="64" y="41" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif" font-size="8.5" font-weight="600" letter-spacing="0.18em" fill="#6B7280">INSTITUTIONAL CTI</text>
+</svg>

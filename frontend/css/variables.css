@@ -1,0 +1,70 @@
+/* CyberLens Design System Tokens — White & Warm Cream Base (High-Finance / Institutional Grade) */
+
+:root {
+  /* Surfaces & Canvases */
+  --bg-canvas: #F8F7F4;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F3EFE7;
+  --bg-subtle-hover: #ECE7DE;
+  --bg-muted: #E6E1D5;
+  --bg-overlay: rgba(20, 23, 26, 0.35);
+
+  /* Borders & Rules */
+  --border-subtle: #E8E3D8;
+  --border-medium: #D9D2C3;
+  --border-strong: #14171A;
+  --border-focus: #9E7B3B;
+
+  /* Typography Colors */
+  --text-primary: #14171A;
+  --text-secondary: #565E6B;
+  --text-muted: #8A929F;
+  --text-inverse: #FFFFFF;
+
+  /* Brand Accents */
+  --brand-gold: #9E7B3B;
+  --brand-gold-light: #C29F5D;
+  --brand-gold-bg: #FAF7F0;
+  --brand-gold-border: #E8DCBE;
+  --brand-dark: #14171A;
+
+  /* Severity Level Tokens */
+  /* LOW */
+  --severity-low-text: #135532;
+  --severity-low-bg: #EDF7F1;
+  --severity-low-border: #C6EBD5;
+  --severity-low-accent: #1B8755;
+
+  /* MEDIUM */
+  --severity-med-text: #825006;
+  --severity-med-bg: #FDF6E8;
+  --severity-med-border: #F6DEAB;
+  --severity-med-accent: #D9822B;
+
+  /* HIGH */
+  --severity-high-text: #962313;
+  --severity-high-bg: #FCF0EE;
+  --severity-high-border: #F8CBC2;
+  --severity-high-accent: #D33E27;
+
+  /* CRITICAL */
+  --severity-crit-text: #6D0D1B;
+  --severity-crit-bg: #F9E9EC;
+  --severity-crit-border: #F1BAC3;
+  --severity-crit-accent: #9E1026;
+
+  /* Typography Scales */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+
+  /* Refined Elevation Shadows */
+  --shadow-xs: 0 1px 2px rgba(20, 23, 26, 0.03);
+  --shadow-sm: 0 1px 3px rgba(20, 23, 26, 0.04), 0 2px 6px rgba(20, 23, 26, 0.02);
+  --shadow-card: 0 1px 3px rgba(20, 23, 26, 0.03), 0 12px 28px -6px rgba(20, 23, 26, 0.04);
+  --shadow-elevated: 0 16px 40px -10px rgba(20, 23, 26, 0.08), 0 2px 6px rgba(20, 23, 26, 0.02);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}

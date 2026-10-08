@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberLens — Intelligence Registry &amp; Audit Logs</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+
+  <!-- Institutional Navigation Bar -->
+  <header class="cyber-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper" title="CyberLens Home">
+        <img src="/logo.svg" alt="CyberLens" class="brand-logo-img">
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/" class="nav-link">Analysis Terminal</a></li>
+          <li><a href="/history.html" class="nav-link active">Intelligence Registry</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-meta">
+        <div class="status-pill">
+          <span class="status-indicator-dot"></span>
+          <span>SYSTEM ACTIVE</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Work Area -->
+  <main class="main-content">
+    
+    <!-- Hero Header -->
+    <section class="hero-section" style="margin-bottom: 28px;">
+      <div class="hero-eyebrow">
+        <span>●</span> Auditable Registry
+      </div>
+      <h1 class="hero-title">Investigation Registry &amp; Historical Dossiers</h1>
+      <p class="hero-subtitle">
+        Review immutable historical IOC analyses, evaluate risk trajectories, and export past assessment reports.
+      </p>
+    </section>
+
+    <!-- Aggregate Metrics Overview Grid -->
+    <section class="registry-stats-grid">
+      <div class="registry-stat-card">
+        <div class="registry-stat-label">Total Ingested</div>
+        <div id="totalCount" class="registry-stat-value">0</div>
+      </div>
+      <div class="registry-stat-card">
+        <div class="registry-stat-label" style="color: var(--severity-crit-text);">Critical Threats</div>
+        <div id="criticalCount" class="registry-stat-value" style="color: var(--severity-crit-text);">0</div>
+      </div>
+      <div class="registry-stat-card">
+        <div class="registry-stat-label" style="color: var(--severity-high-text);">High Risk</div>
+        <div id="highCount" class="registry-stat-value" style="color: var(--severity-high-text);">0</div>
+      </div>
+      <div class="registry-stat-card">
+        <div class="registry-stat-label">Average Risk Index</div>
+        <div id="avgScore" class="registry-stat-value">0 / 100</div>
+      </div>
+    </section>
+
+    <!-- Table Console & Filters -->
+    <section class="cyber-card" style="padding: 0; overflow: hidden;">
+      <div style="padding: 20px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 260px;">
+          <input 
+            type="text" 
+            id="registrySearch" 
+            class="ioc-input" 
+            placeholder="Search by IOC indicator..." 
+            style="background-color: var(--bg-canvas); border: 1px solid var(--border-medium); border-radius: 6px; padding: 8px 14px; font-size: 0.875rem;"
+          >
+        </div>
+        <div>
+          <select 
+            id="registryRiskFilter" 
+            style="background-color: var(--bg-canvas); border: 1px solid var(--border-medium); border-radius: 6px; padding: 8px 14px; font-family: var(--font-body); font-size: 0.875rem; color: var(--text-primary); outline: none;"
+          >
+            <option value="">All Threat Tiers</option>
+            <option value="CRITICAL">Critical Only</option>
+            <option value="HIGH">High Only</option>
+            <option value="MEDIUM">Medium Only</option>
+            <option value="LOW">Low Only</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="cyber-table">
+          <thead>
+            <tr>
+              <th style="width: 80px;">ID</th>
+              <th>Indicator of Compromise</th>
+              <th style="width: 120px;">Type</th>
+              <th style="width: 170px;">Risk Level</th>
+              <th style="width: 220px;">Timestamp (UTC)</th>
+              <th style="width: 140px;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="registryTableBody">
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 32px; color: var(--text-muted);">
+                Loading Registry Records...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Institutional Footer -->
+  <footer class="cyber-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="/favicon.svg" alt="CyberLens" style="height: 18px; width: 18px;">
+        <span><strong>CyberLens</strong> — Institutional Threat Intelligence System</span>
+      </div>
+      <div>Immutable Historical Registry &amp; Multi-Vendor Audit Trail</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/history.js"></script>
+</body>
+</html>

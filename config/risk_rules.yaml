@@ -1,0 +1,51 @@
+# CTI Risk Assessment Scoring Rules & Weights Configuration
+
+# Risk Classification Tiers (0 - 100)
+thresholds:
+  low:
+    min: 0
+    max: 19
+    label: "LOW"
+    description: "Benign or negligible indicators. Standard allowlisting or routine logging."
+  medium:
+    min: 20
+    max: 49
+    label: "MEDIUM"
+    description: "Low-confidence reports or isolated vendor flags. Requires contextual monitoring."
+  high:
+    min: 50
+    max: 74
+    label: "HIGH"
+    description: "Multi-vendor detection consensus or verified repeated abuse. Actionable threat."
+  critical:
+    min: 75
+    max: 100
+    label: "CRITICAL"
+    description: "High consensus malicious indicator, confirmed C2/malware delivery, or severe abuse."
+
+# Dual-Source Weights (When both VirusTotal and AbuseIPDB are applicable and available)
+weights:
+  virustotal: 0.55
+  abuseipdb: 0.45
+
+# VirusTotal Sub-score Calculation Parameters
+virustotal:
+  suspicious_weight: 0.5      # Weight of suspicious detections relative to malicious
+  scaling_factor: 2.5         # Consensus amplification factor
+  base_penalty_threshold: 3   # Minimum malicious engines to trigger base penalty
+  base_penalty_score: 25      # Added base penalty when threshold is met
+
+# AbuseIPDB Sub-score Calculation Parameters
+abuseipdb:
+  confidence_weight: 0.85     # Direct influence of abuse confidence score (0-100)
+  report_volume_weight: 0.15  # Volume contribution weight
+  report_multiplier: 2.0      # Multiplier applied to total abuse reports (capped at 100)
+
+# Severity Overrides (Guaranteed triggers to prevent mathematical score dilution)
+overrides:
+  vt_malicious_critical_threshold: 10   # If VT malicious >= 10, minimum score is 80 (CRITICAL)
+  abuse_confidence_critical_threshold: 90 # If Abuse confidence >= 90%, minimum score is 80 (CRITICAL)
+  hash_malicious_thresholds:
+    critical: 5   # >= 5 engines -> CRITICAL (>= 80)
+    high: 2       # >= 2 engines -> HIGH (>= 55)
+    medium: 1     # 1 engine -> MEDIUM (>= 25)

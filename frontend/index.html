@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberLens — Institutional Threat Intelligence & Risk Assessment</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+
+  <!-- Institutional Navigation Bar -->
+  <header class="cyber-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper" title="CyberLens Home">
+        <img src="/logo.svg" alt="CyberLens" class="brand-logo-img">
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/" class="nav-link active">Analysis Terminal</a></li>
+          <li><a href="/history.html" class="nav-link">Intelligence Registry</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-meta">
+        <div class="status-pill">
+          <span class="status-indicator-dot"></span>
+          <span>SYSTEM ACTIVE</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Work Area -->
+  <main class="main-content">
+    
+    <!-- Hero / Headline Section -->
+    <section class="hero-section">
+      <div class="hero-eyebrow">
+        <span>●</span> SOC-Grade Threat Intelligence
+      </div>
+      <h1 class="hero-title">Precision IOC Analysis &amp; Explainable Risk Assessment</h1>
+      <p class="hero-subtitle">
+        Enter an artifact or network indicator to execute multi-engine vendor consensus, reputation scoring, and deterministic threat classification.
+      </p>
+    </section>
+
+    <!-- Ingestion Console -->
+    <section class="console-card">
+      <div class="input-group-wrapper">
+        <div class="search-icon-prefix">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <input 
+          type="text" 
+          id="iocInput" 
+          class="ioc-input" 
+          placeholder="Paste IPv4, IPv6, Domain, URL, MD5, SHA-1, or SHA-256..."
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <span id="detectedPill" class="detected-pill">DETECTING...</span>
+        <button id="analyzeBtn" class="analyze-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Analyze Indicator
+        </button>
+      </div>
+
+      <!-- Quick Benchmark Sample Chips -->
+      <div class="sample-chips-row">
+        <span class="sample-chip-label">Quick Benchmarks:</span>
+        <button class="sample-chip" data-ioc="8.8.8.8">8.8.8.8 (Clean DNS)</button>
+        <button class="sample-chip" data-ioc="185.220.101.5">185.220.101.5 (Tor Exit)</button>
+        <button class="sample-chip" data-ioc="secure-bank-login-verify.top">secure-bank-login-verify.top (Phish)</button>
+        <button class="sample-chip" data-ioc="275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f">275a021b... (Ransomware)</button>
+      </div>
+    </section>
+
+    <!-- Dynamic Alert Banner -->
+    <div id="alertBanner" class="alert-banner"></div>
+
+    <!-- Loading Skeleton State -->
+    <div id="loadingSkeleton" style="display: none; max-width: 920px; margin: 32px auto 0;">
+      <div class="skeleton-box" style="height: 180px; width: 100%; margin-bottom: 24px;"></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div class="skeleton-box" style="height: 260px;"></div>
+        <div class="skeleton-box" style="height: 260px;"></div>
+      </div>
+    </div>
+
+    <!-- Active Dossier View (Dynamically populated) -->
+    <div id="dossierContainer" class="dossier-container" style="display: none;">
+      
+      <!-- Executive Verdict Banner -->
+      <section id="verdictCard" class="verdict-banner-card">
+        <div class="score-display-wrapper">
+          <span id="dossierScore" class="score-number">0</span>
+          <span class="score-denominator">Risk Index</span>
+        </div>
+
+        <div class="verdict-main-meta">
+          <div class="verdict-badge-row">
+            <span id="dossierSeverityPill" class="severity-pill low">LOW THREAT</span>
+            <span id="dossierType" class="detected-pill" style="margin: 0;">IPv4</span>
+            <span id="dossierConfidencePill" class="confidence-pill">HIGH CONFIDENCE</span>
+          </div>
+          <h2 id="dossierIoc" class="ioc-display-title">Indicator</h2>
+          <p id="dossierSummary" class="verdict-summary-text">Analysis Summary</p>
+        </div>
+
+        <div class="verdict-actions-wrapper">
+          <button id="exportReportBtn" class="analyze-button" style="background-color: var(--brand-gold);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Export JSON Dossier
+          </button>
+        </div>
+      </section>
+
+      <!-- Two-Column Primary Dossier -->
+      <div class="dossier-grid-two-col">
+        
+        <!-- Antivirus Vendor Consensus Radar -->
+        <article class="cyber-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-gold)" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="6"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+              </svg>
+              <h3 class="card-title">Vendor Detection Consensus</h3>
+            </div>
+          </div>
+          <div class="chart-container-box">
+            <canvas id="engineChart"></canvas>
+          </div>
+          <div class="chart-legend-grid">
+            <div class="legend-item">
+              <span style="color: #9E1026; font-weight: 600;">● Malicious</span>
+              <span id="legMalicious" class="legend-badge">0</span>
+            </div>
+            <div class="legend-item">
+              <span style="color: #D9822B; font-weight: 600;">● Suspicious</span>
+              <span id="legSuspicious" class="legend-badge">0</span>
+            </div>
+            <div class="legend-item">
+              <span style="color: #1B8755; font-weight: 600;">● Harmless</span>
+              <span id="legHarmless" class="legend-badge">0</span>
+            </div>
+            <div class="legend-item">
+              <span style="color: #8A929F; font-weight: 600;">● Undetected</span>
+              <span id="legUndetected" class="legend-badge">0</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Attribution & Contributing Justifications -->
+        <article class="cyber-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-gold)" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <h3 class="card-title">Contributing Risk Factors</h3>
+            </div>
+          </div>
+          <ul id="justificationList" class="justification-list"></ul>
+        </article>
+
+      </div>
+
+      <!-- Deep Threat Provider Telemetry Cards -->
+      <div class="dossier-grid-cards">
+        
+        <!-- VirusTotal Dossier -->
+        <article id="vtCard" class="cyber-card">
+          <div class="card-header-row">
+            <h3 class="card-title">VirusTotal Telemetry</h3>
+            <span class="detected-pill" style="margin: 0;">v3 API</span>
+          </div>
+          <div class="telemetry-grid">
+            <div class="telemetry-tile">
+              <span class="telemetry-label">Detection Ratio</span>
+              <span id="vtRatio" class="telemetry-value">0%</span>
+            </div>
+            <div class="telemetry-tile">
+              <span class="telemetry-label">Engine Flagged</span>
+              <span id="vtEngines" class="telemetry-value">0 / 0</span>
+            </div>
+            <div class="telemetry-tile">
+              <span class="telemetry-label">Reputation Score</span>
+              <span id="vtReputation" class="telemetry-value">0</span>
+            </div>
+            <div class="telemetry-tile">
+              <span class="telemetry-label">Last Observed</span>
+              <span id="vtLastSeen" class="telemetry-value">-</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- AbuseIPDB Dossier -->
+        <article id="abuseCard" class="cyber-card">
+          <div class="card-header-row">
+            <h3 class="card-title">AbuseIPDB Telemetry</h3>
+            <span class="detected-pill" style="margin: 0;">v2 API</span>
+          </div>
+          <div class="telemetry-grid">
+            <div class="telemetry-tile">
+              <span class="telemetry-label">Abuse Confidence</span>
+              <span id="abuseScore" class="telemetry-value">0%</span>
+            </div>
+            <div class="telemetry-tile">
+              <span class="telemetry-label">Total Reports</span>
+              <span id="abuseReports" class="telemetry-value">0</span>
+            </div>
+            <div class="telemetry-tile">
+              <span class="telemetry-label">Distinct Reporters</span>
+              <span id="abuseReporters" class="telemetry-value">0</span>
+            </div>
+            <div class="telemetry-tile">
+              <span class="telemetry-label">Network / ISP</span>
+              <span id="abuseIsp" class="telemetry-value">-</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Raw Normalized Intelligence Inspector -->
+      <article class="cyber-card">
+        <div class="card-header-row">
+          <h3 class="card-title">Normalized Schema Payload</h3>
+          <button id="copyJsonBtn" class="btn-secondary" style="font-size: 0.8125rem;">
+            Copy Normalized JSON
+          </button>
+        </div>
+        <pre id="rawJsonViewer" class="code-viewer-box"></pre>
+      </article>
+
+    </div>
+
+  </main>
+
+  <!-- Institutional Footer -->
+  <footer class="cyber-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="/favicon.svg" alt="CyberLens" style="height: 18px; width: 18px;">
+        <span><strong>CyberLens</strong> — Institutional Threat Intelligence System</span>
+      </div>
+      <div>Unified Multi-Source IOC Telemetry &amp; Transparent Risk Scoring</div>
+    </div>
+  </footer>
+
+  <!-- Local Chart.js Script (100% Offline Capable) -->
+  <script src="/js/vendor/chart.umd.min.js"></script>
+  <!-- Application ES Module -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
