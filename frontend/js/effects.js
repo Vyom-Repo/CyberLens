@@ -1,108 +1,52 @@
 /**
  * CyberLens Interactive Effects Engine:
- * - Fluid Optical Reticle Cursor with Target Lock-On
- * - Cinematic Lens Calibration Intro Sequence
+ * - Cinematic Lens Calibration with Expanding Outer Lines & Aperture Reveal
+ * - Executes on every refresh
  */
 
 export const EffectsEngine = {
   /**
-   * Initialize custom optical cursor
-   */
-  initCursor() {
-    // Only initialize on devices with precise pointer (not touch)
-    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
-      return;
-    }
-
-    const dot = document.createElement("div");
-    dot.className = "cyber-cursor-dot";
-
-    const reticle = document.createElement("div");
-    reticle.className = "cyber-cursor-reticle";
-
-    document.body.appendChild(dot);
-    document.body.appendChild(reticle);
-
-    let mouseX = -100;
-    let mouseY = -100;
-    let reticleX = -100;
-    let reticleY = -100;
-
-    window.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-
-      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-    });
-
-    // Smooth fluid interpolation for the outer reticle ring
-    function animateCursor() {
-      reticleX += (mouseX - reticleX) * 0.18;
-      reticleY += (mouseY - reticleY) * 0.18;
-
-      reticle.style.transform = `translate3d(${reticleX}px, ${reticleY}px, 0) translate(-50%, -50%)`;
-      requestAnimationFrame(animateCursor);
-    }
-    requestAnimationFrame(animateCursor);
-
-    // Interactive Hover Lock-On
-    const interactiveSelectors = "a, button, input, select, .sample-chip, .btn-secondary, tr";
-
-    document.addEventListener("mouseover", (e) => {
-      if (e.target.closest(interactiveSelectors)) {
-        reticle.classList.add("active-target");
-      }
-    });
-
-    document.addEventListener("mouseout", (e) => {
-      if (e.target.closest(interactiveSelectors)) {
-        reticle.classList.remove("active-target");
-      }
-    });
-
-    // Hide when mouse leaves viewport
-    document.addEventListener("mouseleave", () => {
-      dot.style.opacity = "0";
-      reticle.style.opacity = "0";
-    });
-
-    document.addEventListener("mouseenter", () => {
-      dot.style.opacity = "1";
-      reticle.style.opacity = "1";
-    });
-  },
-
-  /**
-   * Initialize Cinematic Calibration Splash Screen
+   * Initialize Cinematic Calibration Splash Screen with Spreading Aperture Reveal
    */
   initIntroSequence() {
     const splash = document.getElementById("cinematicSplash");
     if (!splash) return;
 
-    // Check if intro was already played in this browser session
-    const hasPlayed = sessionStorage.getItem("cyberlens_intro_played");
-    if (hasPlayed) {
-      splash.remove();
-      return;
-    }
+    let isDismissing = false;
 
-    // Dismiss function
-    const dismissSplash = () => {
-      if (splash.classList.contains("hidden")) return;
-      splash.classList.add("hidden");
-      sessionStorage.setItem("cyberlens_intro_played", "true");
-      setTimeout(() => splash.remove(), 700);
+    // Aperture Expansion & Project Reveal Transition
+    const triggerReveal = () => {
+      if (isDismissing) return;
+      isDismissing = true;
+
+      // 1. Trigger the dramatic outer lines expansion / aperture burst
+      splash.classList.add("revealing");
+
+      // 2. Remove after the aperture expansion finishes
+      setTimeout(() => {
+        splash.classList.add("hidden");
+        setTimeout(() => splash.remove(), 400);
+      }, 750);
     };
 
-    // Auto dismiss after 1.7 seconds of calibration
-    setTimeout(dismissSplash, 1750);
+    // Auto trigger the aperture expansion after calibration completes (1.4s)
+    const timer = setTimeout(triggerReveal, 1400);
 
-    // Instant skip on click or key press
-    splash.addEventListener("click", dismissSplash);
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" || e.key === " " || e.key === "Enter") {
-        dismissSplash();
-      }
-    }, { once: true });
+    // Instant trigger on click or keypress
+    splash.addEventListener("click", () => {
+      clearTimeout(timer);
+      triggerReveal();
+    });
+
+    window.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "Escape" || e.key === " " || e.key === "Enter") {
+          clearTimeout(timer);
+          triggerReveal();
+        }
+      },
+      { once: true }
+    );
   },
 };

@@ -3,11 +3,8 @@
  */
 
 import { ApiClient } from "./api.js";
-import { EffectsEngine } from "./effects.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  EffectsEngine.initCursor();
-
   const tableBody = document.getElementById("registryTableBody");
   const searchInput = document.getElementById("registrySearch");
   const riskFilter = document.getElementById("registryRiskFilter");

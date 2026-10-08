@@ -1,96 +1,7 @@
-/* CyberLens Cinematic Intro & Optical Cursor Architecture */
+/* CyberLens Cinematic Intro & Aperture Reveal Architecture */
 
 /* ==========================================================================
-   1. Optical Reticle Cursor
-   ========================================================================== */
-.cyber-cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 6px;
-  height: 6px;
-  background-color: var(--brand-dark);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.2s ease, transform 0.1s ease;
-  will-change: transform;
-}
-
-.cyber-cursor-reticle {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 32px;
-  height: 32px;
-  border: 1.5px solid var(--brand-gold);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%, -50%);
-  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.2s ease,
-              background-color 0.2s ease,
-              opacity 0.2s ease;
-  will-change: transform, width, height;
-}
-
-/* Hairline Reticle Crosshairs */
-.cyber-cursor-reticle::before,
-.cyber-cursor-reticle::after {
-  content: "";
-  position: absolute;
-  background-color: var(--brand-gold);
-  transition: all 0.2s ease;
-}
-
-/* Vertical crosshairs */
-.cyber-cursor-reticle::before {
-  top: -4px;
-  bottom: -4px;
-  left: 50%;
-  width: 1px;
-  transform: translateX(-50%);
-  opacity: 0.6;
-}
-
-/* Horizontal crosshairs */
-.cyber-cursor-reticle::after {
-  left: -4px;
-  right: -4px;
-  top: 50%;
-  height: 1px;
-  transform: translateY(-50%);
-  opacity: 0.6;
-}
-
-/* Hover Lock-On State (When targeting buttons, inputs, chips, or links) */
-.cyber-cursor-reticle.active-target {
-  width: 48px;
-  height: 48px;
-  border-color: var(--brand-dark);
-  background-color: rgba(158, 123, 59, 0.08);
-  box-shadow: 0 0 12px rgba(158, 123, 59, 0.2);
-}
-
-.cyber-cursor-reticle.active-target::before,
-.cyber-cursor-reticle.active-target::after {
-  background-color: var(--brand-dark);
-  opacity: 0.9;
-}
-
-/* Hide on touch devices */
-@media (hover: none) and (pointer: coarse) {
-  .cyber-cursor-dot,
-  .cyber-cursor-reticle {
-    display: none !important;
-  }
-}
-
-/* ==========================================================================
-   2. Cinematic Calibration Intro Splash Screen
+   Cinematic Calibration Intro Splash Screen with Aperture Expansion
    ========================================================================== */
 .cinematic-splash-overlay {
   position: fixed;
@@ -101,10 +12,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   user-select: none;
+}
+
+/* Outer Aperture Burst & Dispersion on Reveal */
+.cinematic-splash-overlay.revealing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cinematic-splash-overlay.revealing .splash-outer-ring {
+  animation: apertureExpandOuter 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.cinematic-splash-overlay.revealing .splash-middle-ring {
+  animation: apertureExpandMiddle 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.cinematic-splash-overlay.revealing .splash-crosshair {
+  animation: crosshairSpread 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.cinematic-splash-overlay.revealing .splash-title-wrapper {
+  animation: titleFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .cinematic-splash-overlay.hidden {
@@ -127,47 +60,91 @@
 /* Center Emblem Container */
 .splash-emblem-wrapper {
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 140px;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
 }
 
-/* Concentric Lens Outer Ring Rotation */
+/* Outer Concentric Calibration Rings */
 .splash-outer-ring {
   position: absolute;
   inset: 0;
   border: 1.5px dashed var(--brand-gold);
   border-radius: 50%;
-  animation: spinClockwise 12s linear infinite;
+  animation: spinClockwise 14s linear infinite;
+  transform-origin: center center;
 }
 
 .splash-middle-ring {
   position: absolute;
-  inset: 12px;
-  border: 1px solid var(--border-medium);
+  inset: 16px;
+  border: 1.2px solid var(--border-medium);
   border-radius: 50%;
   animation: pulseScale 2.4s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+/* Optical Crosshair Lines that Spread Out */
+.splash-crosshair {
+  position: absolute;
+  background-color: var(--brand-gold);
+  opacity: 0.7;
+  transform-origin: center center;
+}
+
+.splash-crosshair.vert {
+  top: -12px;
+  bottom: -12px;
+  left: 50%;
+  width: 1.5px;
+  transform: translateX(-50%);
+}
+
+.splash-crosshair.horiz {
+  left: -12px;
+  right: -12px;
+  top: 50%;
+  height: 1.5px;
+  transform: translateY(-50%);
+}
+
+.splash-crosshair.diag1 {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1.2px;
+  transform: translateX(-50%) rotate(45deg);
+  opacity: 0.4;
+}
+
+.splash-crosshair.diag2 {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1.2px;
+  transform: translateX(-50%) rotate(-45deg);
+  opacity: 0.4;
 }
 
 .splash-inner-lens {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: 58px;
+  height: 58px;
   background-color: var(--brand-dark);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 25px -4px rgba(20, 23, 26, 0.2);
-  animation: lensFocus 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-shadow: 0 10px 28px -4px rgba(20, 23, 26, 0.25);
+  animation: lensFocus 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .splash-lens-core {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   background-color: var(--bg-canvas);
   border: 1.5px solid var(--brand-gold);
   border-radius: 50%;
@@ -177,8 +154,8 @@
 }
 
 .splash-lens-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   background-color: var(--brand-gold);
   border-radius: 50%;
 }
@@ -193,14 +170,14 @@
 
 .splash-brand-title {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   color: var(--text-primary);
   opacity: 0;
   transform: translateY(12px);
   filter: blur(6px);
-  animation: revealTitle 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  animation: revealTitle 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
 }
 
 .splash-brand-title span {
@@ -216,13 +193,13 @@
   color: var(--text-muted);
   margin-top: 8px;
   opacity: 0;
-  animation: fadeIn 0.8s ease 0.6s forwards;
+  animation: fadeIn 0.8s ease 0.5s forwards;
 }
 
 /* Progress Calibrator Bar */
 .splash-progress-track {
-  width: 180px;
-  height: 2px;
+  width: 200px;
+  height: 2.5px;
   background-color: var(--border-subtle);
   border-radius: 999px;
   margin-top: 24px;
@@ -237,7 +214,7 @@
   bottom: 0;
   width: 0%;
   background-color: var(--brand-gold);
-  animation: fillProgress 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  animation: fillProgress 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
 }
 
 .splash-ticker-text {
@@ -245,9 +222,9 @@
   font-size: 0.6875rem;
   color: var(--text-muted);
   margin-top: 10px;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   opacity: 0;
-  animation: fadeIn 0.6s ease 0.4s forwards;
+  animation: fadeIn 0.6s ease 0.35s forwards;
 }
 
 /* Keyframe Definitions */
@@ -258,12 +235,12 @@
 
 @keyframes pulseScale {
   0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.05); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 1; }
 }
 
 @keyframes lensFocus {
-  0% { transform: scale(0.6); opacity: 0; }
-  60% { transform: scale(1.08); opacity: 1; }
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
 
@@ -283,4 +260,55 @@
   0% { width: 0%; }
   60% { width: 75%; }
   100% { width: 100%; }
+}
+
+/* ==========================================================================
+   Aperture Spread-Out Reveal Keyframes (Revealing Project)
+   ========================================================================== */
+@keyframes apertureExpandOuter {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    border-width: 1.5px;
+  }
+  100% {
+    transform: scale(16) rotate(90deg);
+    opacity: 0;
+    border-width: 0.5px;
+  }
+}
+
+@keyframes apertureExpandMiddle {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    border-width: 1.2px;
+  }
+  100% {
+    transform: scale(12);
+    opacity: 0;
+    border-width: 0.5px;
+  }
+}
+
+@keyframes crosshairSpread {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(14);
+    opacity: 0;
+  }
+}
+
+@keyframes titleFadeUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-24px) scale(0.96);
+    opacity: 0;
+  }
 }

@@ -10,8 +10,7 @@ import { EffectsEngine } from "./effects.js";
 let currentAnalysis = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize optical cursor and intro animation
-  EffectsEngine.initCursor();
+  // Initialize cinematic lens calibration intro animation
   EffectsEngine.initIntroSequence();
 
   const iocInput = document.getElementById("iocInput");
