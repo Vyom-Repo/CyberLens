@@ -5,10 +5,15 @@
 import { ApiClient } from "./api.js";
 import { ChartRenderer } from "./charts.js";
 import { ClientValidator } from "./validator.js";
+import { EffectsEngine } from "./effects.js";
 
 let currentAnalysis = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize optical cursor and intro animation
+  EffectsEngine.initCursor();
+  EffectsEngine.initIntroSequence();
+
   const iocInput = document.getElementById("iocInput");
   const analyzeBtn = document.getElementById("analyzeBtn");
   const detectedPill = document.getElementById("detectedPill");

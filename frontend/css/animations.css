@@ -1,0 +1,286 @@
+/* CyberLens Cinematic Intro & Optical Cursor Architecture */
+
+/* ==========================================================================
+   1. Optical Reticle Cursor
+   ========================================================================== */
+.cyber-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background-color: var(--brand-dark);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  will-change: transform;
+}
+
+.cyber-cursor-reticle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--brand-gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease,
+              background-color 0.2s ease,
+              opacity 0.2s ease;
+  will-change: transform, width, height;
+}
+
+/* Hairline Reticle Crosshairs */
+.cyber-cursor-reticle::before,
+.cyber-cursor-reticle::after {
+  content: "";
+  position: absolute;
+  background-color: var(--brand-gold);
+  transition: all 0.2s ease;
+}
+
+/* Vertical crosshairs */
+.cyber-cursor-reticle::before {
+  top: -4px;
+  bottom: -4px;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  opacity: 0.6;
+}
+
+/* Horizontal crosshairs */
+.cyber-cursor-reticle::after {
+  left: -4px;
+  right: -4px;
+  top: 50%;
+  height: 1px;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+/* Hover Lock-On State (When targeting buttons, inputs, chips, or links) */
+.cyber-cursor-reticle.active-target {
+  width: 48px;
+  height: 48px;
+  border-color: var(--brand-dark);
+  background-color: rgba(158, 123, 59, 0.08);
+  box-shadow: 0 0 12px rgba(158, 123, 59, 0.2);
+}
+
+.cyber-cursor-reticle.active-target::before,
+.cyber-cursor-reticle.active-target::after {
+  background-color: var(--brand-dark);
+  opacity: 0.9;
+}
+
+/* Hide on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .cyber-cursor-dot,
+  .cyber-cursor-reticle {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   2. Cinematic Calibration Intro Splash Screen
+   ========================================================================== */
+.cinematic-splash-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-canvas);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  user-select: none;
+}
+
+.cinematic-splash-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Subtle Optical Grid Background */
+.splash-grid-matrix {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(20, 23, 26, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 23, 26, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* Center Emblem Container */
+.splash-emblem-wrapper {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+/* Concentric Lens Outer Ring Rotation */
+.splash-outer-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed var(--brand-gold);
+  border-radius: 50%;
+  animation: spinClockwise 12s linear infinite;
+}
+
+.splash-middle-ring {
+  position: absolute;
+  inset: 12px;
+  border: 1px solid var(--border-medium);
+  border-radius: 50%;
+  animation: pulseScale 2.4s ease-in-out infinite;
+}
+
+.splash-inner-lens {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  background-color: var(--brand-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px -4px rgba(20, 23, 26, 0.2);
+  animation: lensFocus 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.splash-lens-core {
+  width: 22px;
+  height: 22px;
+  background-color: var(--bg-canvas);
+  border: 1.5px solid var(--brand-gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-lens-dot {
+  width: 7px;
+  height: 7px;
+  background-color: var(--brand-gold);
+  border-radius: 50%;
+}
+
+/* Wordmark & Typography Entrance */
+.splash-title-wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.splash-brand-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateY(12px);
+  filter: blur(6px);
+  animation: revealTitle 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+.splash-brand-title span {
+  color: var(--brand-gold);
+}
+
+.splash-brand-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 8px;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.6s forwards;
+}
+
+/* Progress Calibrator Bar */
+.splash-progress-track {
+  width: 180px;
+  height: 2px;
+  background-color: var(--border-subtle);
+  border-radius: 999px;
+  margin-top: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.splash-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  background-color: var(--brand-gold);
+  animation: fillProgress 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+.splash-ticker-text {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  animation: fadeIn 0.6s ease 0.4s forwards;
+}
+
+/* Keyframe Definitions */
+@keyframes spinClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseScale {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes lensFocus {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes revealTitle {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes fillProgress {
+  0% { width: 0%; }
+  60% { width: 75%; }
+  100% { width: 100%; }
+}
